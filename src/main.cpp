@@ -5,6 +5,7 @@
 #include <Geode/utils/VersionInfo.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/loader/SettingV3.hpp>
+#include <Geode/loader/ModSettingsManager.hpp>
 #include <Geode/utils/Keyboard.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Popup.hpp>
@@ -1803,7 +1804,7 @@ finally {
         say("downloading update from {} (target v{})", assetUrl, latestVersion);
 
         auto request = web::WebRequest();
-        request.timeout(std::chrono::seconds(120));
+        request.timeout(asp::Duration::fromSecs(120));
         request.onProgress([](web::WebProgress const& progress) {
             size_t downloaded = progress.downloaded();
             size_t total = progress.downloadTotal();
@@ -3530,7 +3531,7 @@ finally {
         void ccTouchEnded(CCTouch* touch, CCEvent* event) override;
         void ccTouchCancelled(CCTouch* touch, CCEvent* event) override;
         void registerWithTouchDispatcher() override;
-        void scrollWheel(float y, float x) override;
+        bool scrollWheel(float y, float x) override;
 
     private:
         enum class HitTarget {
@@ -5493,13 +5494,13 @@ finally {
         CCDirector::get()->getTouchDispatcher()->addTargetedDelegate(this, -1000, true);
     }
 
-    void AfterflowOverlay::scrollWheel(float y, float) {
+    bool AfterflowOverlay::scrollWheel(float y, float) {
         if (!m_isOpen || !m_deck || m_tutorialStep >= 0 || m_creditsLayer) {
-            return;
+            return false;
         }
         float const steps = std::clamp(y, -3.f, 3.f);
         if (steps == 0.f) {
-            return;
+            return true;
         }
         CCPoint const mouse = geode::cocos::getMousePos();
         CCPoint const deckPoint = m_deck->convertToNodeSpace(mouse);
@@ -5509,13 +5510,14 @@ finally {
                 m_logViewScroll += steps;
                 refresh();
             }
-            return;
+            return true;
         }
         if (overDeck && m_activeTab != 0) {
-            return;
+            return true;
         }
         m_logScroll += steps;
         refresh();
+        return true;
     }
 
     bool AfterflowOverlay::ccTouchBegan(CCTouch* touch, CCEvent*) {
@@ -6272,7 +6274,7 @@ finally {
 
     void AfterflowOverlay::endTickEdit() {
         if (m_editingRow >= 0 && m_editingRow < 2 && m_tickInputs[m_editingRow]) {
-            m_tickInputs[m_editingRow]->defocus();
+            m_tickInputs[m_editingRow]->getInputNode()->onClickTrackNode(false);
         }
         m_editingRow = -1;
     }
@@ -6924,7 +6926,10 @@ finally {
         if (!clear) {
             bindings.push_back(keybind);
         }
-        Mod::get()->setSettingValue<std::vector<Keybind>>(settingName, bindings);
+        if (auto setting = std::dynamic_pointer_cast<KeybindSettingV3>(
+                ModSettingsManager::from(Mod::get())->get(settingName))) {
+            setting->setValue(bindings);
+        }
         (void)Mod::get()->saveData();
         if (clear) {
             say("{} key cleared", stageTitle);
@@ -8661,8 +8666,8 @@ class $modify(BufPlayLayer, PlayLayer) {
         forgetPress();
     }
 
-    bool init(GJGameLevel* gameLevel, bool useReplayData, bool skipObjectCreation) {
-        if (!PlayLayer::init(gameLevel, useReplayData, skipObjectCreation)) {
+    bool init(GJGameLevel* gameLevel, bool skipObjectCreation) {
+        if (!PlayLayer::init(gameLevel, skipObjectCreation)) {
             return false;
         }
         g_inEditor = false;
@@ -9093,7 +9098,7 @@ class $modify(BufEffectGameObject, EffectGameObject) {
         (void)self.setHookPriority("EffectGameObject::triggerObject", MOD_HOOK_PRIORITY);
     }
 
-    void triggerObject(GJBaseGameLayer* gameLayer, int uniqueId, gd::vector<int> const* remapKeyVector) {
+    void triggerObject(GJBaseGameLayer* gameLayer, int uniqueId, std::vector<int> const* remapKeyVector) {
         if (state.isSimulating) {
             return;
         }
@@ -9348,12 +9353,12 @@ class $modify(BufBaseGameLayer, GJBaseGameLayer) {
         return GJBaseGameLayer::canBeActivatedByPlayer(playerObject, effectObject);
     }
 
-    void collisionCheckObjects(PlayerObject* playerObject, gd::vector<GameObject*>* gameObjects, int gameObjectCount, float deltaTime) {
+    void collisionCheckObjects(PlayerObject* playerObject, std::vector<GameObject*>* gameObjects, int gameObjectCount, float deltaTime) {
         if (!state.isSimulating) {
             GJBaseGameLayer::collisionCheckObjects(playerObject, gameObjects, gameObjectCount, deltaTime);
             return;
         }
-        static gd::vector<GameObject*> relevantObjects;
+        static std::vector<GameObject*> relevantObjects;
         relevantObjects.clear();
         if (static_cast<int>(relevantObjects.capacity()) < gameObjectCount) {
             relevantObjects.reserve(gameObjectCount);
@@ -9510,7 +9515,7 @@ class $modify(BufBaseGameLayer, GJBaseGameLayer) {
         GJBaseGameLayer::gameEventTriggered(gameEvent, materialId, playerId);
     }
 
-    void toggleGroupTriggered(int groupId, bool shouldActivate, gd::vector<int> const& remapKeyVector, int triggerId, int controlId) {
+    void toggleGroupTriggered(int groupId, bool shouldActivate, std::vector<int> const& remapKeyVector, int triggerId, int controlId) {
         if (state.isSimulating) {
 
             if (!shouldActivate) {
@@ -9525,7 +9530,7 @@ class $modify(BufBaseGameLayer, GJBaseGameLayer) {
         GJBaseGameLayer::toggleGroupTriggered(groupId, shouldActivate, remapKeyVector, triggerId, controlId);
     }
 
-    void spawnGroup(int groupId, bool isOrdered, double delaySeconds, gd::vector<int> const& remapKeyVector, int triggerId, int controlId) {
+    void spawnGroup(int groupId, bool isOrdered, double delaySeconds, std::vector<int> const& remapKeyVector, int triggerId, int controlId) {
         if (state.isSimulating) {
             return;
         }
@@ -9560,7 +9565,7 @@ class $modify(BufBaseGameLayer, GJBaseGameLayer) {
         GJBaseGameLayer::activateItemEditTrigger(itemTrigger);
     }
 
-    void activateItemCompareTrigger(ItemTriggerGameObject* itemTrigger, gd::vector<int> const& remapKeyVector) {
+    void activateItemCompareTrigger(ItemTriggerGameObject* itemTrigger, std::vector<int> const& remapKeyVector) {
         if (state.isSimulating) {
             return;
         }
