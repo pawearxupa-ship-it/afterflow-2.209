@@ -1,0 +1,312 @@
+{
+  "geode": "6.0.0-beta.1",
+  "gd": {
+    "win": "2.2091",
+    "mac": "2.2091",
+    "android": "2.2091",
+    "ios": "2.2091"
+  },
+  "id": "afterflow.prsevend",
+  "name": "Afterflow",
+  "version": "2.2.8",
+  "developer": "prsevend",
+  "description": "a predictive input cheat that fixes your early clicks and makes them accurate, with customizable UI colors and a polished control panel.",
+  "tags": [
+    "gameplay",
+    "utility",
+    "developer"
+  ],
+  "resources": {
+    "files": [
+      "resources/afterflow-body.fnt",
+      "resources/afterflow-body.png",
+      "resources/afterflow-display.fnt",
+      "resources/afterflow-display.png",
+      "resources/afterflow-logo.png",
+      "resources/OFL.txt"
+    ]
+  },
+  "settings": {
+    "terminal-title": {
+      "type": "title",
+      "name": "terminal",
+      "description": "terminal window options",
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "terminal-enabled": {
+      "type": "bool",
+      "name": "enable terminal",
+      "description": "show the terminal button in the afterflow control panel",
+      "default": true,
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybinds-title": {
+      "type": "title",
+      "name": "keybinds",
+      "description": "change geodes keybinding anytime for afterflow",
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage": {
+      "type": "keybind",
+      "name": "cycle stages",
+      "description": "cycle prediction stages",
+      "category": "gameplay",
+      "default": [
+        "F6"
+      ],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-terminal": {
+      "type": "keybind",
+      "name": "control panel",
+      "description": "open or close the afterflow control panel",
+      "category": "universal",
+      "default": [
+        "F9"
+      ],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "stage-keys-title": {
+      "type": "title",
+      "name": "stage keys",
+      "description": "bind a key to a single stage and jump straight to it. empty means unbound",
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-tight": {
+      "type": "keybind",
+      "name": "stage: tight",
+      "description": "jump straight to tight (2 ticks all modes, 2 wave)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-quick": {
+      "type": "keybind",
+      "name": "stage: quick",
+      "description": "jump straight to quick (4 ticks all modes, 4 wave)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-steady": {
+      "type": "keybind",
+      "name": "stage: steady",
+      "description": "jump straight to steady (8 ticks all modes, 8 wave)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-flow": {
+      "type": "keybind",
+      "name": "stage: flow",
+      "description": "jump straight to flow (16 ticks all modes, 8 wave)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-deep": {
+      "type": "keybind",
+      "name": "stage: deep",
+      "description": "jump straight to deep (24 ticks all modes, 12 wave)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-wide": {
+      "type": "keybind",
+      "name": "stage: wide",
+      "description": "jump straight to wide (32 ticks all modes, 16 wave)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-max": {
+      "type": "keybind",
+      "name": "stage: max",
+      "description": "jump straight to max (40 ticks all modes, 20 wave)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-raw": {
+      "type": "keybind",
+      "name": "stage: raw",
+      "description": "jump straight to raw (off, 100% raw input)",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-c1": {
+      "type": "keybind",
+      "name": "stage: custom 1",
+      "description": "jump straight to custom stage 1",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-c2": {
+      "type": "keybind",
+      "name": "stage: custom 2",
+      "description": "jump straight to custom stage 2",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-c3": {
+      "type": "keybind",
+      "name": "stage: custom 3",
+      "description": "jump straight to custom stage 3",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "keybind-stage-c4": {
+      "type": "keybind",
+      "name": "stage: custom 4",
+      "description": "jump straight to custom stage 4",
+      "category": "gameplay",
+      "default": [],
+      "platforms": [
+        "win",
+        "mac"
+      ]
+    },
+    "orb-buffer-enabled": {
+      "type": "bool",
+      "name": "orb buffering",
+      "description": "hold an early click and drop it on the orb it would have missed",
+      "default": true
+    },
+    "orb-buffer-ticks": {
+      "type": "int",
+      "name": "orb buffer window",
+      "description": "how many ticks an early click waits for an orb (60 ticks = 0.25s)",
+      "default": 24,
+      "min": 1,
+      "max": 60
+    },
+    "ui-title": {
+      "type": "title",
+      "name": "ui customization",
+      "description": "customize the control panel appearance"
+    },
+    "ui-primary-color": {
+      "type": "color",
+      "name": "primary color",
+      "description": "primary gradient color for the panel",
+      "default": "#A855F7"
+    },
+    "ui-secondary-color": {
+      "type": "color",
+      "name": "secondary color",
+      "description": "secondary gradient color for the panel",
+      "default": "#D5B4FF"
+    },
+    "ui-surface-color": {
+      "type": "color",
+      "name": "surface color",
+      "description": "background color of the panel card",
+      "default": "#17131F"
+    },
+    "ui-text-color": {
+      "type": "color",
+      "name": "text color",
+      "description": "color used for all panel text",
+      "default": "#EFE7F7"
+    },
+    "ui-glow": {
+      "type": "bool",
+      "name": "glow",
+      "description": "draw a soft accent glow behind the panel",
+      "default": true
+    },
+    "ui-panel-scale": {
+      "type": "float",
+      "name": "panel scale",
+      "description": "adjust the overall size of the control panel",
+      "default": 0.7,
+      "min": 0.4,
+      "max": 2.0,
+      "step": 0.05
+    },
+    "ui-font-scale": {
+      "type": "float",
+      "name": "font scale",
+      "description": "adjust the text size in the control panel",
+      "default": 1.5,
+      "min": 0.8,
+      "max": 2.0,
+      "step": 0.05
+    },
+    "mobile-title": {
+      "type": "title",
+      "name": "mobile",
+      "description": "android and ios options",
+      "platforms": [
+        "android",
+        "ios"
+      ]
+    },
+    "mobile-floating-button": {
+      "type": "bool",
+      "name": "floating af button",
+      "description": "also show the draggable af button on screen. the pause menu button is always there",
+      "default": false,
+      "platforms": [
+        "android",
+        "ios"
+      ]
+    }
+  }
+}
